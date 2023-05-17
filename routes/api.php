@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\SaleController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -23,7 +24,10 @@ Route::middleware('auth:sanctum')
     });
 
 // Versão simplificado
-Route::apiResource('users', UserController::class);
+Route::apiResources([
+    'users' => UserController::class,
+    'sales' => SaleController::class,
+]);
 
 /*Route::post('users', [UserController::class, 'store']);
 Route::get('users', [UserController::class, 'index']);

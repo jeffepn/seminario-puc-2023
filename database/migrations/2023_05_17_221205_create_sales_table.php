@@ -10,13 +10,17 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('sales', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->rememberToken();
+
+            $table->bigInteger('user_id')->unsigned();
+            $table->foreign('user_id')->references('id')->on('users');
+
+            $table->bigInteger('client_id')->unsigned();
+            $table->foreign('client_id')->references('id')->on('users');
+
+            $table->double('total', 10, 2);
+
             $table->timestamps();
         });
     }
@@ -26,6 +30,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('sales');
     }
 };
