@@ -19,6 +19,9 @@ class SaleStoreRequest extends FormRequest
         return [
             'user_id' => ['required', 'exists:users,id', new ValidateTypeUser(TypeUser::TYPE_OWNER)],
             'client_id' => ['required', 'exists:users,id', new ValidateTypeUser(TypeUser::TYPE_CLIENT)],
+            'items' => ['required', 'array'],
+            'items.*.product_id' => ['required', 'exists:products,id'],
+            'items.*.amount' => ['required', 'integer', 'min: 1'],
         ];
     }
 }

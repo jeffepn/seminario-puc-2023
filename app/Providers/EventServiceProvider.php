@@ -2,8 +2,12 @@
 
 namespace App\Providers;
 
+use App\Events\SaleCreated;
+use App\Listeners\UpdateTotalWhenSaleCreated;
+use App\Models\ItemSale;
 use App\Models\Sale;
 use App\Models\User;
+use App\Observers\ItemSaleObserver;
 use App\Observers\SaleObserver;
 use App\Observers\UserObserver;
 use Illuminate\Auth\Events\Registered;
@@ -22,6 +26,9 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
+        SaleCreated::class => [
+            UpdateTotalWhenSaleCreated::class,
+        ],
     ];
 
     /**
@@ -31,6 +38,7 @@ class EventServiceProvider extends ServiceProvider
     {
         User::observe(UserObserver::class);
         Sale::observe(SaleObserver::class);
+        ItemSale::observe(ItemSaleObserver::class);
     }
 
     /**

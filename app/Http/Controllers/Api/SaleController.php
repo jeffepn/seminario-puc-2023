@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Events\SaleCreated;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SaleStoreRequest;
+use App\Models\ItemSale;
 use App\Models\Sale;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -23,7 +25,16 @@ class SaleController extends Controller
      */
     public function store(SaleStoreRequest $request)
     {
-        Sale::create($request->all());
+        $sale = Sale::create($request->only(['user_id', 'client_id']));
+
+        $items = collect($request->input('items'));
+
+        $sale->items()->saveMany(
+            $items->map(fn($currentItem) => new ItemSale($currentItem))
+        );
+
+        // Emitir um evento de criação de venda
+        event(new SaleCreated($sale->id));
 
         return response([
             'message' => "A venda foi cadastrada com sucesso!!",
