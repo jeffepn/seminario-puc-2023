@@ -17,7 +17,7 @@ class SaleStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => ['required', 'exists:users,id', new ValidateTypeUser(TypeUser::TYPE_OWNER)],
+            'user_id' => ['required', 'exists:users,id', new ValidateTypeUser(TypeUser::TYPE_SELLER)],
             'client_id' => ['required', 'exists:users,id', new ValidateTypeUser(TypeUser::TYPE_CLIENT)],
             'items' => ['required', 'array'],
             'items.*.product_id' => ['required', 'exists:products,id'],

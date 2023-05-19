@@ -14,9 +14,14 @@ class ProductStoreRequest extends FormRequest
      */
     public function rules(): array
     {
+        $sometimes = null;
+        if ($this->method() !== "POST") {
+            $sometimes = 'sometimes';
+        }
+
         return [
-            'name' => ['required', 'min:3', 'max:40'],
-            'value' => ['required', 'numeric', 'between:0,99999999.99']
+            'name' => [$sometimes, 'required', 'min:3', 'max:40'],
+            'value' => [$sometimes, 'required', 'numeric', 'between:0,99999999.99']
         ];
     }
 }

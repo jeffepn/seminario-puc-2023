@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserStoreRequest;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -18,12 +19,12 @@ class UserController extends Controller
             $query->where('type', request()->input('type'));
         }
 
-        return $query->get();
+        return UserResource::collection($query->get());
     }
 
     public function show(User $user)
     {
-        return $user;
+        return new UserResource($user);
     }
 
     public function store(UserStoreRequest $request)
@@ -49,7 +50,6 @@ class UserController extends Controller
 
         return response([
             'message' => "Usuário foi atualizado com sucesso!!",
-            'method' => $request->method()
         ], Response::HTTP_OK);
     }
 

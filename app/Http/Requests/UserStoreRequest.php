@@ -19,11 +19,11 @@ class UserStoreRequest extends FormRequest
         if ($this->method() !== "POST") {
             $sometimes = 'sometimes';
         }
-        //dd();
+
         return [
             'name' => [$sometimes, 'required', 'min:4', 'max:255'],
             'email' => [$sometimes, 'required', 'email', 'max: 255', Rule::unique('users', 'email')->ignore($this->user?->id)],
-            'type' => [$sometimes, 'required', Rule::in([TypeUser::TYPE_OWNER, TypeUser::TYPE_CLIENT])]
+            'type' => [$sometimes, 'required', Rule::in([TypeUser::TYPE_SELLER, TypeUser::TYPE_CLIENT])]
         ];
     }
 
@@ -33,7 +33,7 @@ class UserStoreRequest extends FormRequest
             'required' => 'O campo :attribute deve ser obrigatório.',
             'email.email' => 'O campo email deve ser um endereço de email válido.',
             'unique' => 'Já existe um usuário com este :attribute.',
-            'type.in' => 'O usuário deve ser do :attribute ' . TypeUser::TYPE_OWNER . ' ou ' . TypeUser::TYPE_CLIENT,
+            'type.in' => 'O usuário deve ser do :attribute ' . TypeUser::TYPE_SELLER . ' ou ' . TypeUser::TYPE_CLIENT,
         ];
     }
 

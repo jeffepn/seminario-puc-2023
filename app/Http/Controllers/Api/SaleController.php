@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Events\SaleCreated;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SaleStoreRequest;
+use App\Http\Resources\SaleResource;
+use App\Http\Resources\SaleResourceCollection;
 use App\Models\ItemSale;
 use App\Models\Sale;
 use Illuminate\Http\Request;
@@ -15,9 +17,9 @@ class SaleController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        return new SaleResourceCollection(Sale::all());
     }
 
     /**
@@ -46,9 +48,7 @@ class SaleController extends Controller
      */
     public function show(Sale $sale)
     {
-        $sale->load(['seller', 'client']);
-
-        return $sale;
+        return new SaleResource($sale);
     }
 
     /**
@@ -64,6 +64,10 @@ class SaleController extends Controller
      */
     public function destroy(Sale $sale)
     {
-        //
+        $sale->delete();
+
+        return response([
+            'message' => "A venda foi deletada com sucesso!!",
+        ], Response::HTTP_OK);
     }
 }
